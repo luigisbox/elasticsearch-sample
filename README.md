@@ -1,24 +1,53 @@
-# README
+# Simple search using Elasticsearch
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+To run this application, you'll need 
 
-Things you may want to cover:
+- [PostgreSQL database](https://www.postgresql.org/download/)
+- [Elasticsearch](https://www.elastic.co/downloads/elasticsearch)
 
-* Ruby version
+Either install them locally, or, if you know what you are doing, use docker images. I used following containers during the live demo.
 
-* System dependencies
+    docker run -p 5432:5432 -v ~/viir-pg-data:/var/lib/postgresql/data postgres:9.6
+    docker run -p 9200:9200 elasticsearch:5.5
 
-* Configuration
+You will also need a working Ruby installation.
 
-* Database creation
+## Importing data to PostgreSQL
 
-* Database initialization
+Download the dataset from https://ekosystem.slovensko.digital/otvorene-data#crz and decompress it. 
+You can import the data into PostgreSQL with this command
 
-* How to run the test suite
+    psql -h localhost -U postgres crz < crz.sql
+    
+Make sure the database called `crz` exists, before you try to import the dump. You can create it by running `create database crz` as the `postgres` user.
 
-* Services (job queues, cache servers, search engines, etc.)
+Importing the data will take some time.
 
-* Deployment instructions
+## Importing data from PostgreSQL to Elasticsearch
 
-* ...
+Check the config file in `config/database.yml` and update DB connection parameters if needed. Then run 
+
+    rake import:mapping
+    rake import:dump
+    
+The import will again take a long time, but you can work with the data while it is importing.
+
+## Running the application
+
+Install dependencies with
+
+    bundle
+    
+You may need to install PostgreSQL development headers (package `libpq-dev` on Linux) first.
+
+Then run the application with
+
+    bundle exec rails s
+    
+The application should be running on http://localhost:3000/search
+
+## Crossroads
+
+- The import from PostgreSQL to Elasticsearch is in `lib/tasks/import.rake`
+- Elasticsearch query is in `app/controllers/searches_controller.rb`
+- HTML frontend in `app/views/searches/show.html.erb`
