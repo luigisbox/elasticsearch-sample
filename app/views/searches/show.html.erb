@@ -1,0 +1,34 @@
+<form method="get">
+  <input type="search" name="q" class="q" value="<%= @q %>"/>
+</form>
+
+<% if !@results || @results["hits"]["hits"].size == 0 %>
+  <p>No results</p>
+<% else %>
+  <ol>
+    <% @results["hits"]["hits"].each do |hit| %>
+      <li>
+        <%== hor(hit, "subject") %>
+        <br>
+        <%== hor(hit, "supplier_name") %> -&gt; <%== hor(hit, "department") %>, <%= hit["_source"]["amount"] %>EUR
+      </li>
+    <% end %>
+  </ol>
+
+  <h2>Supplier</h2>
+  <ul>
+  <% @results["aggregations"]["by_supplier"]["buckets"].each do |bucket| %>
+    <li><a href="/search?q=<%= @q %>&supplier=<%= bucket["key"] %>"><%= bucket["key"] %> (<%= bucket["doc_count"] %>)</a></li>
+  <% end %>
+  </ul>
+
+  <h2>Amount</h2>
+  <ul>
+  <% @results["aggregations"]["by_price"]["buckets"].each do |bucket| %>
+    <li><%= bucket["key"].to_i %>&mdash;<%= bucket["key"].to_i + 1000 %> (<%= bucket["doc_count"] %>)</li>
+  <% end %>
+  </ul>
+
+  <%= @results["hits"]["total"] %> results
+<% end %>
+
