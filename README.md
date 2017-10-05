@@ -46,6 +46,8 @@ Then run the application with
     
 The application should be running on http://localhost:3000/search
 
+![Screenshot](demo.png)
+
 ## Crossroads
 
 - The import from PostgreSQL to Elasticsearch is in `lib/tasks/import.rake`
