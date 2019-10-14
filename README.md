@@ -27,8 +27,8 @@ Importing the data will take some time.
 
 Check the config file in `config/database.yml` and update DB connection parameters if needed. Then run 
 
-    rake import:mapping
-    rake import:dump
+    bundle exec rake import:mapping
+    bundle exec rake import:dump
     
 The import will again take a long time, but you can work with the data while it is importing.
 
@@ -42,7 +42,7 @@ You may need to install PostgreSQL development headers (package `libpq-dev` on L
 
 Then run the application with
 
-    bundle exec rails s
+    rails s
     
 The application should be running on http://localhost:3000/search
 
