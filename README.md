@@ -1,3 +1,10 @@
+# Elasticsearch queries and example application
+
+- Find the example queries in [EXAMPLES.md](EXAMPLES.md)
+- For Slovak language support, see:
+  - https://github.com/essential-data/elasticsearch-sk
+  - https://github.com/SlovakNationalGallery/elasticsearch-slovencina
+
 # Simple search using Elasticsearch
 
 To run this application, you'll need 
